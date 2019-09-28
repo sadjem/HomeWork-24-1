@@ -8,7 +8,7 @@ import java.util.List;
 public class UserDao {
     private List<User> users = new LinkedList<>();
     private static UserDao instance;
-    private  int id = 0;
+    private int id = 0;
 
     public static synchronized UserDao getInstance() {
         if (instance == null) {
@@ -23,18 +23,30 @@ public class UserDao {
     public List<User> getUsers() {
         return users;
     }
-     public  int generateId(){
+
+    public int generateId() {
         id++;
         return id;
-     }
+    }
 
     public void addUser(User user) {
         users.add(user);
     }
-    public void deleteUser (String name){
-        for( User user : users){
-            if (user.getName().equals(name)){
+
+    public void deleteUser(String name) {
+        for (User user : users) {
+            if (user.getName().equals(name)) {
                 users.remove(user);
+            }
+        }
+    }
+
+    public void updateUser(int id) {
+        User newUser = new User();
+        for (User user : users) {
+            if (user.getId() == id) {
+                user = newUser;
+                users.add(user);
             }
         }
     }

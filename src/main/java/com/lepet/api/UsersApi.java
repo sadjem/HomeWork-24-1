@@ -36,7 +36,7 @@ public class UsersApi {
     }
 
     @GET
-    @Path("/(id)")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") int id) {
         String result = null;
@@ -56,13 +56,23 @@ public class UsersApi {
                 .build();
     }
     @DELETE
-    @Path("/(name)")
+    @Path("/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@PathParam("name") String name){
         UserDao.getInstance().deleteUser(name);
         return Response
                 .status(Response.Status.OK)
                 .entity("User " + name + " deleted")
+                .build();
+    }
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response updateUser(@FormParam("name") String name, @FormParam("age") int age){
+        UserDao.getInstance().updateUser();
+        return Response
+                .status(Response.Status.OK)
+                .entity("User +" + name + " updated")
                 .build();
     }
 }

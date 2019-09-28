@@ -1,7 +1,5 @@
 package com.lepet.model;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class User {
     private String name;
     private int age;
@@ -17,6 +15,10 @@ public class User {
     }
 
     public User() {
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
