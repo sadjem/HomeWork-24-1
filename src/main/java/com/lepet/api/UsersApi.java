@@ -27,7 +27,7 @@ public class UsersApi {
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response createNewUser(@FormParam("name") String name, @FormParam("age") int age) {
-        User newUser = new User(name, age);
+        User newUser = new User(name, age, UserDao.getInstance().generateId());
         UserDao.getInstance().addUser(newUser);
         return Response
                 .status(Response.Status.OK)
@@ -38,7 +38,7 @@ public class UsersApi {
     @GET
     @Path("/(id)")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@FormParam("id") int id) {
+    public Response getUser(@PathParam("id") int id) {
         String result = null;
         try {
             List<User> users = UserDao.getInstance().getUsers();
@@ -53,6 +53,16 @@ public class UsersApi {
         return Response
                 .status(Response.Status.OK)
                 .entity("User with " + id + result)
+                .build();
+    }
+    @DELETE
+    @Path("/(name)")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUser(@PathParam("name") String name){
+        UserDao.getInstance().deleteUser(name);
+        return Response
+                .status(Response.Status.OK)
+                .entity("User " + name + " deleted")
                 .build();
     }
 }
