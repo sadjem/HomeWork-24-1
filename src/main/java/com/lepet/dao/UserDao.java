@@ -41,13 +41,14 @@ public class UserDao {
         }
     }
 
-    public void updateUser(int id) {
-        User newUser = new User();
-        for (User user : users) {
-            if (user.getId() == id) {
-                user = newUser;
-                users.add(user);
+    public boolean updateUser(User updateUser) {
+        for(User user : users){
+            if(user.getName().equals(updateUser.getName())){
+                user.setAge(updateUser.getAge());
+                return true;
             }
         }
+        return false;
+        }
     }
-}
+

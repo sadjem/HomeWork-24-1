@@ -12,6 +12,7 @@ import java.util.List;
 
 @Path("/")
 public class UsersApi {
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {
@@ -66,13 +67,20 @@ public class UsersApi {
                 .build();
     }
     @PUT
-    @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response updateUser(@FormParam("name") String name, @FormParam("age") int age){
-        UserDao.getInstance().updateUser();
-        return Response
-                .status(Response.Status.OK)
-                .entity("User +" + name + " updated")
-                .build();
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUser(String jsonUser){
+        User user = gson.fromJson(jsonUser, User.class);
+        if(UserDao.getInstance().updateUser(user)){
+            return Response
+                    .status(Response.Status.OK)
+                    .entity("User updated")
+                    .build();
+        }else{
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity("Error")
+                    .build();
+        }
     }
 }
